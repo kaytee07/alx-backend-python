@@ -5,5 +5,8 @@ float a and b as argument and returns their sum as a float
 """
 
 
-def add(a:float, b:float) -> float:
+def add(a: float, b: float) -> float:
+    """
+    return the sum of parameters
+    """
     return a + b
