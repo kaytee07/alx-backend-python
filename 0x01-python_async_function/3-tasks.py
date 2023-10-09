@@ -10,7 +10,7 @@ import asyncio
 wait_random = __import__('0-basic_async_suntax').wait_random
 
 
-def task_wait_random(max_delay=10):
+def task_wait_random(max_delay: int) -> asyncio.Task:
     """
     takes an integer max delay and returns aysnc.io Task
 
