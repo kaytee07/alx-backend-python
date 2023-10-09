@@ -9,7 +9,7 @@ import random
 from typing import Union
 
 
-async def wait_random(max_delay=10) -> Union[float, None]:
+async def wait_random(max_delay:int = 10) -> float:
     """
     delay function waits between 0 and max_delay and returns
     a random number between 0 and 10
