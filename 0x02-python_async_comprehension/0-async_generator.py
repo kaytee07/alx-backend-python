@@ -4,11 +4,12 @@ async_generator that takes no arguments.
 """
 import asyncio
 import random
+for typing import Generator
 
 
-async def async_generator() -> float:
+async def async_generator() -> Generator:
     """
-    function loop 10 times each time wait one second before 
+    function loop 10 times each time wait one second before
     returning a random number between 1 and 10
 
     Args:
