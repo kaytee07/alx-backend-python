@@ -18,3 +18,11 @@ class TestedAccessNestedMap(unittest.TestCase):
     ])
     def test_access_nested_map(self, input1, input2, answer):
         self.assertEqual(access_nested_map(input1, input2), answer)
+
+    @parameterized.expand([
+        ({}, ("a",), KeyError),
+        ({"a": 1}, ("a", "b"), KeyError)
+    ])
+    def test_access_nested_map_exception(self, input1, input2, answer):
+        with self.assertRaises(answer):
+            access_nested_map(input1, input2)
