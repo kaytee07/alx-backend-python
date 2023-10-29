@@ -1,42 +1,43 @@
 #!/usr/bin/env python3
-"""
-test client.py
+"""A module for testing the client module.
 """
 import unittest
-from unittest.mock import patch, Mock, PropertyMock
-from parameterized import parameterized, parameterized_class
-from client import GithubOrgClient
 from typing import Dict
+from unittest.mock import (
+    MagicMock,
+    Mock,
+    PropertyMock,
+    patch,
+)
+from parameterized import parameterized, parameterized_class
 from requests import HTTPError
+
+from client import (
+    GithubOrgClient
+)
 from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """
-    test all client functions
-    """
+    """Tests the `GithubOrgClient` class."""
     @parameterized.expand([
-        ("google", {"github": "google"}),
-        ("abc", {"github": "abx"})
+        ("google", {'login': "google"}),
+        ("abc", {'login': "abc"}),
     ])
-    @patch("client.get_json")
-    def test_org(self,
-                 organization: str,
-                 response: Dict,
-                 mock_get_json) -> None:
-        """
-        test that GithubOrgClient.org returns correct value
-        """
-        githuborgclient_instance = GithubOrgClient(organization)
-        mock_get_json.return_value = response
-        result = githuborgclient_instance.org
-        self.assertEqual(result, response)
-        mock_get_json.assert_called_once()
+    @patch(
+        "client.get_json",
+    )
+    def test_org(self, org: str, resp: Dict, mocked_fxn: MagicMock) -> None:
+        """Tests the `org` method."""
+        mocked_fxn.return_value = MagicMock(return_value=resp)
+        gh_org_client = GithubOrgClient(org)
+        self.assertEqual(gh_org_client.org(), resp)
+        mocked_fxn.assert_called_once_with(
+            "https://api.github.com/orgs/{}".format(org)
+        )
 
-    def test_public_repos_url(self):
-        """
-        test that  GithubOrgClient._public_repos_url
-        """
+    def test_public_repos_url(self) -> None:
+        """Tests the `_public_repos_url` property."""
         with patch(
                 "client.GithubOrgClient.org",
                 new_callable=PropertyMock,
@@ -50,10 +51,8 @@ class TestGithubOrgClient(unittest.TestCase):
             )
 
     @patch("client.get_json")
-    def test_public_repos(self, mock_get_json):
-        """
-        unittest GithubOrgClient.public_repos.
-        """
+    def test_public_repos(self, mock_get_json: MagicMock) -> None:
+        """Tests the `public_repos` method."""
         test_payload = {
             'repos_url': "https://api.github.com/users/google/repos",
             'repos': [
